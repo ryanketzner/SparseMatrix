@@ -13,7 +13,7 @@
 
 TEST(SparseMatrixTest, TestMultiplyVector)
 {
-    std::string file = "/home/reno/Documents/UCF/sparse/test_1.mtx";
+    std::string file = "../input/test_1.mtx";
     SparseMatrix<int> A(file);
 
     std::vector<int> x({1,2,3,4,5,6});
@@ -26,7 +26,7 @@ TEST(SparseMatrixTest, TestMultiplyVector)
 
 TEST(SparseMatrixTest, TestPowVector)
 {
-    std::string file = "/home/reno/Documents/UCF/sparse/test_1.mtx";
+    std::string file = "../input/test_1.mtx";
     SparseMatrix<int> A(file);
 
     std::vector<int> x({1,2,3,4,5,6});
@@ -39,7 +39,7 @@ TEST(SparseMatrixTest, TestPowVector)
 
 TEST(SparseMatrixTest, TestMultiplyVector_1000)
 {
-    std::string file = "/home/reno/Documents/UCF/sparse/test_1.mtx";
+    std::string file = "../input/test_1.mtx";
     SparseMatrix<long> A(file);
 
     std::vector<long> x({1,2,3,4,5,6});
@@ -60,7 +60,7 @@ TEST(SparseMatrixTest, TestMultiplyVector_1000)
 
 TEST(SparseMatrixTest, TestPowVector_1000)
 {
-    std::string file = "/home/reno/Documents/UCF/sparse/test_1.mtx";
+    std::string file = "../input/test_1.mtx";
     SparseMatrix<long> A(file);
 
     std::vector<long> x({1,2,3,4,5,6});
