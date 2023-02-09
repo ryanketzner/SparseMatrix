@@ -1,15 +1,20 @@
 #include "sparse.hpp"
 #include "gtest/gtest.h"
 
-// TEST(SparseMatrixTest, TestMatrix1)
-// {
-//     std::string file = "/home/reno/Documents/UCF/sparse/test_1.mtx";
-//     SparseMatrix<int> sparse_3(file);
+TEST(SparseMatrixTest, TestSetup)
+{
+    std::string file = "../input/test_1.mtx";
+    SparseMatrix<int> A(file);
 
-//     sparse_3.printRowPtr();
-// 	sparse_3.printColInd();
-// 	sparse_3.printVals();
-// }
+    std::vector<int> row_ptr = A.getRowPtr();
+    std::vector<int> col_ind = A.getColInd();
+
+    std::vector<int> expected_row_ptr({0,2,5,8,12,16,19});
+    std::vector<int> expected_col_ind({0,4,0,1,5,1,2,3,0,2,3,4,1,3,4,5,1,4,5});
+
+    EXPECT_EQ(expected_row_ptr,row_ptr);
+    EXPECT_EQ(expected_col_ind,col_ind);
+}
 
 TEST(SparseMatrixTest, TestMultiplyVector)
 {

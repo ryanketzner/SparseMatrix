@@ -177,6 +177,16 @@ public:
         std::cout << std::endl;
     }
 
+    std::vector<int> getColInd()
+    {
+        return col_ind;
+    }
+
+    std::vector<int> getRowPtr()
+    {
+        return row_ptr;
+    }
+
 protected:
 
     int m;
