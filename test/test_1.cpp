@@ -8,12 +8,15 @@ TEST(SparseMatrixTest, TestSetup)
 
     std::vector<int> row_ptr = A.getRowPtr();
     std::vector<int> col_ind = A.getColInd();
+    std::vector<int> val = A.getVal();
 
     std::vector<int> expected_row_ptr({0,2,5,8,12,16,19});
     std::vector<int> expected_col_ind({0,4,0,1,5,1,2,3,0,2,3,4,1,3,4,5,1,4,5});
+    std::vector<int> expected_val({10,-2,3,9,3,7,8,7,3,8,7,5,8,9,9,13,4,2,-1});
 
     EXPECT_EQ(expected_row_ptr,row_ptr);
     EXPECT_EQ(expected_col_ind,col_ind);
+    EXPECT_EQ(expected_val,val);
 }
 
 TEST(SparseMatrixTest, TestMultiplyVector)
@@ -49,7 +52,7 @@ TEST(SparseMatrixTest, TestMultiplyVector_1000)
 
     std::vector<long> x({1,2,3,4,5,6});
 
-    int exp = 1000;
+    const int exp = 1000;
     std::vector<long> y = A*x;
     for (int i = 0; i < exp-1; i++)
     {
@@ -70,7 +73,7 @@ TEST(SparseMatrixTest, TestPowVector_1000)
 
     std::vector<long> x({1,2,3,4,5,6});
 
-    int exp = 1000;
+    const int exp = 1000;
     std::vector<long> y = A.pow(x,exp);
 
     std::vector<long> expected_y({-219034273575977048, 5322504499393071497, -7646502977385207889,
@@ -78,8 +81,6 @@ TEST(SparseMatrixTest, TestPowVector_1000)
 
     EXPECT_EQ(y,expected_y);
 }
-
-
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);

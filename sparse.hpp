@@ -124,11 +124,10 @@ public:
     std::vector<V> operator *(const std::vector<V>& x)
     {
         int n = x.size();
-        std::vector<V> y(n);
+        std::vector<V> y(n,0);
 
         for (int i = 0; i < n; i++)
         {
-            y[i] = 0;
             for (int j = row_ptr[i]; j < row_ptr[i+1]; j++)
             {
                 y[i] = y[i] + val[j] * x[col_ind[j]];
@@ -185,6 +184,11 @@ public:
     std::vector<int> getRowPtr()
     {
         return row_ptr;
+    }
+
+    std::vector<T> getVal()
+    {
+        return val;
     }
 
 protected:
