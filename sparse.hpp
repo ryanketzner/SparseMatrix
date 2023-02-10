@@ -39,7 +39,8 @@ public:
         }
         else
         {
-            std::cout << "Cannot open file " << path << std::endl;
+            std::string err_msg = "Cannot open file: " + path + "\n" + "Make sure you run the program from \"SparseMatrix/build\"";
+            throw std::runtime_error(err_msg);
         }
         ifs.close();
     }
