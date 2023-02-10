@@ -121,7 +121,7 @@ public:
     }
 
     template <typename V>
-    std::vector<V> operator *(const std::vector<V>& x)
+    std::vector<V> operator *(const std::vector<V>& x) const
     {
         int n = x.size();
         std::vector<V> y(n,0);
@@ -137,7 +137,7 @@ public:
     }
 
     template <typename V>
-    std::vector<V> pow(const std::vector<V>& x,int power)
+    std::vector<V> pow(const std::vector<V>& x,int power) const
     {
         int n = x.size();
         std::vector<V> y(n,0);
@@ -167,7 +167,7 @@ public:
     }
 
     template <typename V>
-    void printRowVector(const std::vector<V>& vect)
+    void printRowVector(const std::vector<V>& vect) const
     {
         for (int i = 0; i < vect.size(); i++)
         {
@@ -176,19 +176,24 @@ public:
         std::cout << std::endl;
     }
 
-    std::vector<int> getColInd()
+    std::vector<int> getColInd() const
     {
         return col_ind;
     }
 
-    std::vector<int> getRowPtr()
+    std::vector<int> getRowPtr() const
     {
         return row_ptr;
     }
 
-    std::vector<T> getVal()
+    std::vector<T> getVal() const
     {
         return val;
+    }
+
+    int getN() const
+    {
+        return n;
     }
 
 protected:
