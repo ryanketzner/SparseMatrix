@@ -1,5 +1,5 @@
 # SparseMatrix
-First homework for CDA5110. The core implementation of the sparse matrix class is in the file `sparse.hpp`. The file `main.cpp` generates sparse matrices from the .mtx files, multiplies multiplies their 1000th power by a vector, and prints out the runtime.
+First homework for CDA5110. The core implementation of the sparse matrix class is in the file `sparse.hpp`. The file `main.cpp` generates sparse matrices from the .mtx files, multiplies their 1000th power by a vector, and prints out the runtime.
 
 ## Build Instructions
 
