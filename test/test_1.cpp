@@ -6,12 +6,12 @@ TEST(SparseMatrixTest, TestSetup)
     std::string file = "../input/test_1.mtx";
     SparseMatrix<int> A(file);
 
-    std::vector<int> row_ptr = A.getRowPtr();
-    std::vector<int> col_ind = A.getColInd();
+    std::vector<unsigned int> row_ptr = A.getRowPtr();
+    std::vector<unsigned int> col_ind = A.getColInd();
     std::vector<int> val = A.getVal();
 
-    std::vector<int> expected_row_ptr({0,2,5,8,12,16,19});
-    std::vector<int> expected_col_ind({0,4,0,1,5,1,2,3,0,2,3,4,1,3,4,5,1,4,5});
+    std::vector<unsigned int> expected_row_ptr({0,2,5,8,12,16,19});
+    std::vector<unsigned int> expected_col_ind({0,4,0,1,5,1,2,3,0,2,3,4,1,3,4,5,1,4,5});
     std::vector<int> expected_val({10,-2,3,9,3,7,8,7,3,8,7,5,8,9,9,13,4,2,-1});
 
     EXPECT_EQ(expected_row_ptr,row_ptr);

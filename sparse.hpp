@@ -176,12 +176,14 @@ public:
         std::cout << std::endl;
     }
 
-    std::vector<int> getColInd() const
+    // Getters
+
+    std::vector<unsigned int> getColInd() const
     {
         return col_ind;
     }
 
-    std::vector<int> getRowPtr() const
+    std::vector<unsigned int> getRowPtr() const
     {
         return row_ptr;
     }
@@ -191,20 +193,30 @@ public:
         return val;
     }
 
-    int getN() const
+    unsigned int getN() const
     {
         return n;
     }
 
+    unsigned int getM() const
+    {
+        return m;
+    }
+
+    unsigned int getSize() const
+    {
+        return size;
+    }
+
 protected:
 
-    int m;
-    int n;
-    int size;
+    unsigned int m;
+    unsigned int n;
+    unsigned int size;
 
     std::vector<T> val;
-    std::vector<int> col_ind;
-    std::vector<int> row_ptr;
+    std::vector<unsigned int> col_ind;
+    std::vector<unsigned int> row_ptr;
 };
 
 // Template specialization for pattern matrices/binary images
