@@ -8,6 +8,76 @@
 template <typename T>
 using Entry = std::pair<std::array<int,2>,T>;
 
+struct Matrix
+{
+    int m;
+    int n;
+    int nnz;
+};
+
+namespace Sparse
+{
+    inline Matrix get_dims(std::ifstream& ifs)
+    {
+        Matrix mat;
+        if (ifs.is_open())
+        {
+            std::string header;
+
+            // Skip comment in first line
+            std::getline(ifs,header);
+            std::getline(ifs,header);
+
+            // Read matrix dimensions and number of elements from header
+            std::stringstream ss(header);
+            ss >> mat.m;
+            ss >> mat.n;
+            ss >> mat.nnz;
+        }
+        return mat;
+    }
+
+    template <typename T>
+    inline std::vector<Entry<T>> read_lines(std::ifstream& ifs, int size)
+    {
+        std::string line;
+        std::vector<Entry<T>> row_order;
+        for (int k = 0; k < size; k++)
+        {
+            int i;
+            int j;
+            T val;
+            std::getline(ifs,line);
+            std::stringstream linestream(line);
+            linestream >> i;
+            linestream >> j;
+            linestream >> val;
+
+            // Convert to zero-index
+            row_order.push_back({{i-1,j-1},val});
+        }
+        return row_order;
+    }
+
+    template <typename T>
+    inline std::vector<Entry<T>> get_lines(std::ifstream& ifs, int nnz)
+    {
+        if (ifs.is_open())
+        {
+            std::string header;
+
+            std::vector<Entry<T>> col_order = read_lines<T>(ifs,nnz);
+            return col_order;
+        }
+        else
+        {
+            std::string err_msg = "Cannot open file. Make sure you run the program from \"SparseMatrix/build\"";
+            throw std::runtime_error(err_msg);
+        }
+        ifs.close();
+    }
+}
+
 template <typename T>
 class SparseMatrix
 {  

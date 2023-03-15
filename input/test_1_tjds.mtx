@@ -1,0 +1,19 @@
+%%MatrixMarket matrix coordinate string general
+6 6 17
+1 1 a11
+3 1 a31
+1 2 a12
+2 2 a22
+4 2 a42
+2 3 a23
+3 3 a33
+1 4 a14
+3 4 a34
+4 4 a44
+2 5 a25
+4 5 a45
+5 5 a55
+6 5 a65
+4 6 a46
+5 6 a56
+6 6 a66
