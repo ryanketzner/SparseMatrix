@@ -112,7 +112,7 @@ public:
         for (int l = 0; l < pow; l++)
         {
             std::vector<V> x = get_permuted_vector(y);
-            std::fill(y.begin(),y.end(),0);
+            std::fill(y.begin(),y.end(),0); // may cause problems with some template parameters
 
             for (int i = 0; i < num_tjdiag; i++)
             {
@@ -134,12 +134,10 @@ public:
     template <typename V>
     std::vector<V> get_permuted_vector(const std::vector<V>& x_in) const
     {
-        std::vector<V> x;
-        x.reserve(x_in.size());
-
+        std::vector<V> x(x_in.size());
         for (int i = 0; i < x_in.size(); i++)
         {
-            x.push_back(x_in.at(permutation[i]));
+            x[i] = x_in[permutation[i]];
         }
 
         return x;
