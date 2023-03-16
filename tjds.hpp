@@ -1,5 +1,8 @@
 #include <sparse.hpp>
 
+#ifndef TJDS_HPP
+#define TJDS_HPP
+
 template <typename T>
 class TJDS
 {
@@ -16,14 +19,14 @@ public:
         // elements will be in the given order of the file
         // which is column order for the .mtx files used
         std::vector<Entry<T>> col_order = Sparse::get_lines<T>(ifs,nnz);
-        std::vector<std::array<int,2>> cols = count_cols(col_order);
-        sort_cols(cols);
-
         std::vector<std::vector<Entry<T>>> seperated_cols = seperate_columns(col_order);
         sort_col_list(seperated_cols); 
+
         build_tjds(seperated_cols);
     }
 
+    // Sorts columns in descending order of their size.
+    // In case of a tie, sorts columns in ascending order of their indices.
     static void sort_col_list(std::vector<std::vector<Entry<T>>>& seperated_cols)
     {
         auto sorter = [](const std::vector<Entry<T>>& a, const std::vector<Entry<T>>& b)
@@ -52,7 +55,7 @@ public:
         {
             permutation.emplace_back(seperated_cols[i][0].first[1]);
         }
-        num_tjdiag = permutation.size() - 1;
+        num_tjdiag = num_rows;
 
         for (int i = 0; i < num_rows; i++)
         {
@@ -72,8 +75,13 @@ public:
         }
     }
 
+    // Multiplies vector by matrix
+    // e.g., y = A^pow * x
+    // Output type is same as input type
+    // Multiplication operation must be defined on matrix and vector type
+    // Will not throw error if this condition isn't met!
     template <typename V>
-    std::vector<V> operator *(const std::vector<V>& x_in)
+    std::vector<V> operator *(const std::vector<V>& x_in) const
     {
         std::vector<V> y(x_in.size());
 
@@ -92,12 +100,16 @@ public:
         return y;
     }
 
+    // Multiplies vector by matrix to power "pow"
+    // e.g., y = A^pow * x
+    // Multiplication operation must be defined on matrix and vector type
+    // Will not throw error if this condition isn't met!
     template <typename V>
-    std::vector<V> pow(const std::vector<V>& x_in,int power) const
+    std::vector<V> pow(const std::vector<V>& x_in,int pow) const
     {
         std::vector<V> y = x_in; // copy x_in to y
 
-        for (int l = 0; l < power; l++)
+        for (int l = 0; l < pow; l++)
         {
             std::vector<V> x = get_permuted_vector(y);
             std::fill(y.begin(),y.end(),0);
@@ -117,6 +129,8 @@ public:
         return y;
     }
 
+    // Permutes a vector according to TJDS column permutation.
+    // Necessary for pow() function
     template <typename V>
     std::vector<V> get_permuted_vector(const std::vector<V>& x_in) const
     {
@@ -125,25 +139,13 @@ public:
 
         for (int i = 0; i < x_in.size(); i++)
         {
-            x.push_back(x_in[permutation[i]]);
+            x.push_back(x_in.at(permutation[i]));
         }
 
         return x;
     }
 
-    // void build_tjds(std::vector<std::vector<Entry<T>>>& sep_cols)
-    // {
-    //     auto sorter = [](const std::array<int,2>& a, const std::array<int,2>& b)
-    //     {
-    //         if (a[0] == b[0])
-    //             return a[1] < b[1];
-            
-    //         return a[0] > b[0];
-    //     };
-
-
-    // }
-
+    // Seperate entries in the list of entries into a list of columns
     static std::vector<std::vector<Entry<T>>> seperate_columns(const std::vector<Entry<T>>& col_order)
     {
         std::vector<std::vector<Entry<T>>> columns;
@@ -172,54 +174,14 @@ public:
         return columns;
     }
 
-    static std::vector<std::array<int,2>> count_cols(const std::vector<Entry<T>>& col_order)
+    int getN() const
     {
-        // list of column_index/size pairs
-        std::vector<std::array<int,2>> cols;
-
-        int col = col_order[0].first[1];
-        int col_size = 1;
-
-        int i = 1;
-        while (i < col_order.size())
-        {
-            int next_col = col_order[i].first[1];
-
-            if (next_col == col)
-            {
-                col_size++;
-            }
-            else
-            {
-                std::array<int,2> column({col_size,col});
-                cols.push_back(column);
-
-                col_size = 1;
-                col = next_col;
-            }
-            i++;
-        }
-        std::array<int,2> column({col_size,col});
-        cols.push_back(column);
-
-        return cols;
+        return n;
     }
 
-    static void sort_cols(std::vector<std::array<int,2>>& cols)
-    {
-        auto sorter = [](const std::array<int,2>& a, const std::array<int,2>& b)
-        {
-            if (a[0] == b[0])
-                return a[1] < b[1];
-            
-            return a[0] > b[0];
-        };
-        std::sort(cols.begin(),cols.end(),sorter);
-    }
-
-    int m;
-    int n;
-    int nnz;
+    int m; // number of rows
+    int n; // number of columns
+    int nnz; // number of non-zeros
     int num_tjdiag;
 
     std::vector<T> value_list;
@@ -227,3 +189,5 @@ public:
     std::vector<int> start_position;
     std::vector<int> permutation;
 };
+
+#endif

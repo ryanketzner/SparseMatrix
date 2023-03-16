@@ -1,27 +1,6 @@
 #include "tjds.hpp"
 #include "gtest/gtest.h"
 
-TEST(TJDS, TestSetup)
-{
-    std::string file = "../input/test_1_tjds.mtx";
-    std::ifstream ifs(file);
-
-    Matrix mat = Sparse::get_dims(ifs);
-    std::vector<Entry<std::string>> col_order = Sparse::get_lines<std::string>(ifs,mat.nnz);
-
-    std::vector<std::array<int,2>> columns = TJDS<std::string>::count_cols(col_order);
-    std::vector<std::array<int,2>> expected_columns({{2,0},{3,1},{2,2},{3,3},{4,4},{3,5}});
-
-    // Check that columns read from file correctly
-    EXPECT_EQ(columns,expected_columns);
-
-    expected_columns = {{4,4},{3,1},{3,3},{3,5},{2,0},{2,2}};
-
-    // Check column sorting
-    TJDS<std::string>::sort_cols(columns);
-    EXPECT_EQ(columns,expected_columns);
-}
-
 TEST(TJDS,TestBuildTJDS)
 {
     std::string file = "../input/test_1_tjds.mtx";

@@ -5,6 +5,9 @@
 #include <array>
 #include <algorithm>
 
+#ifndef SPARSE_HPP
+#define SPARSE_HPP
+
 template <typename T>
 using Entry = std::pair<std::array<int,2>,T>;
 
@@ -311,3 +314,5 @@ std::vector<Entry<bool>> SparseMatrix<bool>::read_lines(std::ifstream& ifs)
     }
     return row_order;
 }
+
+#endif

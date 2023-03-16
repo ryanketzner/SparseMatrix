@@ -1,24 +1,6 @@
 #include "sparse.hpp"
-#include <chrono>
-
-template <typename T>
-double getTime(const SparseMatrix<T>& A, int runs)
-{
-	// Create vector of ones
-	std::vector<T> y;
-	int n = A.getN();
-	std::vector<T> x(n,1);
-
-	const double msToS = 1.0e-6;
-	auto t1 = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < runs; i++)
-	{
-		y = A.pow(x,1000);
-	}
-	auto t2 = std::chrono::high_resolution_clock::now();
-	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(t2-t1);
-	return msToS*elapsed.count()/runs;
-}
+#include "tjds.hpp"
+#include "util.hpp"
 
 int main()
 {
@@ -43,6 +25,24 @@ int main()
 	std::cout << "Memplus Time (s): " << t_memplus << std::endl;
 
 	double t_pwt = getTime(A_4,1);
+	std::cout << "PWT Time (s): " << t_pwt << std::endl;
+
+	TJDS<bool> A_t(ibm);
+	TJDS<float> A_2t(goodwin);
+	TJDS<float> A_3t(memplus);
+	TJDS<float> A_4t(pwt);
+
+	//Since execution time is small, ibm is averaged over ten runs
+	t_ibm = getTime(A_t,10);
+	std::cout << "IBM Time (s): " << t_ibm << std::endl;
+
+	t_goodwin = getTime(A_2t,1);
+	std::cout << "Goodwin Time (s): " << t_goodwin << std::endl;
+
+	t_memplus = getTime(A_3t,1);
+	std::cout << "Memplus Time (s): " << t_memplus << std::endl;
+
+	t_pwt = getTime(A_4t,1);
 	std::cout << "PWT Time (s): " << t_pwt << std::endl;
 
 	return 0;
