@@ -45,6 +45,19 @@ TEST(SparseMatrixTest, TestPowVector)
     EXPECT_EQ(y,expected_y);
 }
 
+TEST(SparseMatrixTest, TestPowVector_Par)
+{
+    std::string file = "../input/test_1.mtx";
+    SparseMatrix<int> A(file);
+
+    std::vector<int> x({1,2,3,4,5,6});
+    std::vector<int> y = A.pow_par(std::execution::par,x,1);
+
+    std::vector<int> expected_y({0,39,66,80,175,12});
+
+    EXPECT_EQ(y,expected_y);
+}
+
 TEST(SparseMatrixTest, TestMultiplyVector_1000)
 {
     std::string file = "../input/test_1.mtx";

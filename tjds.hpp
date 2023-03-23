@@ -109,11 +109,10 @@ public:
     {
         std::vector<V> y = x_in; // copy x_in to y
 
+        std::vector<V> x(x_in.size());
         for (int l = 0; l < pow; l++)
         {
-            std::vector<V> x = get_permuted_vector(y);
-            std::fill(y.begin(),y.end(),0); // may cause problems with some template parameters
-
+            x = get_permuted_vector_fill(y);
             for (int i = 0; i < num_tjdiag; i++)
             {
                 int k = 0;
@@ -138,6 +137,22 @@ public:
         for (int i = 0; i < x_in.size(); i++)
         {
             x[i] = x_in[permutation[i]];
+        }
+
+        return x;
+    }
+
+    // Permutes a vector according to TJDS column permutation.
+    // Necessary for pow() function
+    // Also fills vector with zeros
+    template <typename V>
+    std::vector<V> get_permuted_vector_fill(std::vector<V>& x_in) const
+    {
+        std::vector<V> x(x_in.size());
+        for (int i = 0; i < x_in.size(); i++)
+        {
+            x[i] = x_in[permutation[i]];
+            x_in[permutation[i]] = 0;
         }
 
         return x;
@@ -175,6 +190,11 @@ public:
     int getN() const
     {
         return n;
+    }
+
+    int get_nnz() const
+    {
+        return nnz;
     }
 
     int m; // number of rows

@@ -4,6 +4,8 @@
 #include <vector>
 #include <array>
 #include <algorithm>
+#include <numeric>
+#include <execution>
 
 #ifndef SPARSE_HPP
 #define SPARSE_HPP
@@ -210,6 +212,49 @@ public:
         return y;
     }
 
+    template <typename V, typename Policy>
+    std::vector<V> pow_par(Policy&& policy, const std::vector<V>& x,int power) const
+    {
+        int n = x.size();
+        std::vector<V> y(n);
+        std::vector<V> temp(n);
+
+        std::vector<int> indices(n);
+        std::iota(indices.begin(),indices.end(),0);
+
+        std::for_each(policy, indices.begin(), indices.end(), 
+        [&](int i)
+        {
+            for (int j = row_ptr[i]; j < row_ptr[i+1]; j++)
+            {
+                y[i] = y[i] + val[j] * x[col_ind[j]];
+            }
+        });
+
+        for (int k = 0; k < power-1; k++)
+        {
+            std::copy(policy,y.begin(),y.end(),temp.begin());
+            std::fill(policy,y.begin(),y.end(),0);
+
+            std::for_each(policy, indices.begin(), indices.end(), 
+            [&](int i)
+            {
+                for (int j = row_ptr[i]; j < row_ptr[i+1]; j++)
+                {
+                    y[i] = y[i] + val[j] * temp[col_ind[j]];
+                }
+            });
+        }
+        return y;
+    }
+
+    // template <typename V, typename Policy>
+    // std::vector<V> pow_par_2(Policy&& policy, const std::vector<V>& x,int power) const
+    // {
+    //     return accumulate()
+    // }
+
+
     template <typename V>
     std::vector<V> pow(const std::vector<V>& x,int power) const
     {
@@ -239,6 +284,7 @@ public:
         }
         return y;
     }
+
 
     template <typename V>
     void printRowVector(const std::vector<V>& vect) const
@@ -278,6 +324,11 @@ public:
     }
 
     unsigned int getSize() const
+    {
+        return size;
+    }
+
+    unsigned int get_nnz() const
     {
         return size;
     }
