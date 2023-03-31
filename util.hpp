@@ -55,7 +55,7 @@ double getTime_par(Policy&& policy, const MatrixType<T>& A, int runs)
 	auto t1 = std::chrono::high_resolution_clock::now();
 	for (int i = 0; i < runs; i++)
 	{
-		y = A.pow_par(policy,x,1000);
+		y = A.pow_par(policy,x,10000);
 	}
 	auto t2 = std::chrono::high_resolution_clock::now();
 	auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(t2-t1);

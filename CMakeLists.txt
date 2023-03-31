@@ -13,7 +13,7 @@ include_directories(PUBLIC .)
 
 find_package(TBB REQUIRED tbb)
 if (TBB_FOUND)
-	link_libraries(-ltbb)
+	link_libraries(tbb)
 	add_executable(main_policy main_policy.cpp)
 else()
 	message("Parallel build not possible. Install tbb for parallel build")
